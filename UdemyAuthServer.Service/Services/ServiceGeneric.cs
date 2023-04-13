@@ -26,6 +26,7 @@ namespace UdemyAuthServer.Service.Services
 
         public async Task<Response<TDto>> AddAsync(TDto entity)
         {
+            // map'leme bu sefer ui'da değil de servis kısmında yapıdı..
             var newEntity = ObjectMapper.Mapper.Map<TEntity>(entity);
 
             await _genericRepository.AddAsync(newEntity);

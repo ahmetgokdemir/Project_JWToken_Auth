@@ -17,6 +17,7 @@ namespace UdemyAuthServer.Core.Repositories
 
         Task AddAsync(TEntity entity);
 
+        // iservice'de Task olarak işaterlendi. implementasyonunda await kullanıldığı için!!! IGenericRepository
         void Remove(TEntity entity);
 
         TEntity Update(TEntity entity);
