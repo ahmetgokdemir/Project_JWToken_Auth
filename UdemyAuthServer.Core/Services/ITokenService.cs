@@ -9,6 +9,7 @@ namespace UdemyAuthServer.Core.Services
 {
     public interface ITokenService
     {
+        // UdemyAuthServer.Service'de implemente edilecek
         TokenDto CreateToken(UserApp userApp);
 
         ClientTokenDto CreateTokenByClient(Client client);
