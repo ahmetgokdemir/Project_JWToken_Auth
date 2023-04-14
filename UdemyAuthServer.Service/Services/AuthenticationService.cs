@@ -38,6 +38,7 @@ namespace UdemyAuthServer.Service.Services
         {
             if (loginDto == null) throw new ArgumentNullException(nameof(loginDto));
 
+            //  user --> UserApp; aşağıda bir convert işlemi var sanki loginDto --> UserApp (bilgiler app.json içerisinde değil db'de)  
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
             if (user == null) return Response<TokenDto>.Fail("Email or Password is wrong", 400, true);
@@ -67,7 +68,9 @@ namespace UdemyAuthServer.Service.Services
 
         public Response<ClientTokenDto> CreateTokenByClient(ClientLoginDto clientLoginDto)
         {
-            var client = _clients.SingleOrDefault(x => x.Id == clientLoginDto.ClientId && x.Secret == clientLoginDto.ClientSecret);
+            //  _clients = optionsClient.Value (app.json'a erişim); aşağıda bir convert işlemi var sanki clientLoginDto --> client (bilgiler app.json içeiinde)  
+            var client = _clients.SingleOrDefault(x => x.Id == clientLoginDto.ClientId && x.Secret == clientLoginDto.ClientSecret); 
+
 
             if (client == null)
             {
