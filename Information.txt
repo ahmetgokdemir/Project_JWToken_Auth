@@ -1,0 +1,131 @@
+﻿!!! bak
+
+txt ekleme --> solution sağ tıklayıp add new solution folder yerine direk add new txt sonra add new txt seç
+
+14. ITokenService interface'sinin oluşturulması
+
+0:46 / 7:23 interface ler (iservice, irepo) core katmanında (Entities), implementasyonları ise iservice, service (BLL) katmanında irepo ise, data katmanında (DAL)
+
+1:09  Bu service'de response dönmeyeceğiz 
+bu service'i kendi iç mekanizmamız içerisinde kullanacağız.. 
+Client'ın (consumer/talep eden), bunlarla  (UserApp ve Client sınıfları) işi olmayacak .. dto'lar üzerinden işlem yapıp, iç mekanizma
+dtoları cast edecek ...
+
+Response dönme olayını IAuthentication interface kısmında döneceğiz..
+
+1:42 TokenDTO dönüyor... 8. Core Layer:Entity'lerin oluşturulması dersinden UserApp
+
+2:26 
+createtokenbyclient üyelik gerektirmeyen api'lerde kullanılacak zira !!!reflesh token (amacı süresi bitince client'ı login sayfasına atmak ama createtokenbyclient mekanizmasında login'e (username, password) gerek yok onun yerine client_id ve client_secret olacak) kullanılmayacak 
+onun yerine clien_id ve client_secret yapısı sayesinde client authserver'dan token alacak.. 
+bu token (access token) içerisinde client hangi api'lere istek yapabilir bilgisi tutulacak..
+
+2:41 / 7:23 
+Client sınıfı ne bir entity (veri tabanında değil appsetting.json içerisinde tutulacak) ne de dto; 
+
+
+!!!Dipnot: 
+Client sınıfı ile ClientLoginDto arasıdnaki fark? 
+galiba AuthenticationService.cs'de convert ediliyor  dto (ClientLoginDto ) dan class'a (Client)... 
+dto ile class ayrımı olsun diye
+
+3:07 
+Client sınıfını ve UserApp sınıfını kullanacak olan yapı clientlardır (consumer/talep eden)... 
+clientlar, Client sınıfı üzerinden sadece sadece üyelik gerektirmeyen api'lere erişebilir o yüzden ClientTokenDto alıyorlar ....
+clientlar, UserApp sınıfı  üzerinden üyelik gerektiren api'lere erişebilir  o yüzden TokenDto alıyor...
+
+Lakin client'lar  (consumer/talep eden) bu sınıflara doğrudan erişemeyecek, dto'ları (ClientLoginDto  LoginDto) kullancak; 
+iç mekanizma da bu dtoları, bu sınıflara (Client, UserApp ) cast edecek.
+
+ayrıca UserAppDto ise register işleminde kullanılacak galiba!!!
+
+3:50 Id → username, Secret → password OAuth2.0 protokolünden geliyor
+
+
+4:46 / 7:23 
+Client sınıfındaki audience kendi iç mekanizmasında kullanılacak olan property; client’ın hangi api’lara erişebileceğini belirtir …
+audience/bu veriler jwt'ın payload kısmında olacaklar..
+
+ama client bu class'ı direkt olarak kullanmayacak onun yerine ClientLoginDto kullanacak; iç mekanizmda ClientLoginDto'yu Client'a cast
+edecek.
+aynısı UserApp için de olacak client  LoginDto kullanacak; iç mekanizmda LoginDto'yu UserApp 'a cast edecek
+
+ayrıca UserAppDto ise register işleminde kullanılacak galiba!!!
+
+
+
+15. IAuthenticationService interface'sinin oluşturulması IAuthenticationService.cs
+
+
+Bu servise diğer api'lar tarafından kullanılacağı için bir önceki ITokenService'in (iç mekanizmda kullanılacak) aksine 
+dışarıya açılacağı için geriye responsedto dönecek..
+
+AuthenticationService, ITokenService'i kullanacak...
+
+1:16Kullanıcının login işlemleri de gerçekleştirilecek ve geriye token dönülecek 2 tane dto ihtiyaç var
+
+1. logindto 2. clientlogindto
+
+dip not: eğer dto görüyorsanız bunları client'ların görebileceği modellerdir..
+
+
+geri dönüş değerleri dto (tokenDTO, clientTokenDTO, NodataDTO)
+
+5:08 reflesh token aracılığıyla yeni bir access token alınacak
+
+5:35 user logout olunca reflesh token'ı yok etmek..
+
+
+8:03 / 9:25 fazla client durumda db’de tutulabilir ama hoca dizin olarak app.json’da tutacak
+8:16 / 9:25 postmanin (client) gönderdiği datalarla (ClientLoginDto.cs) app.json daki datalar karşılaştırılır...
+
+/*
+  "Clients": [
+    {
+      "Id": "SpaApp",
+      "Secret": "secret",
+      "Audiences": [ "www.miniapi3.com" ]
+    },
+    ......
+  ]
+*/
+
+TEKRAR ÖZET:
+
+üyelik gerektirende username ve password gerekli ve bu datalar client'ın app.json dosyasında değil db'de olacak 
+ve client postman üzerinden dataları (LoginDto) gönderip bu datalar db'deki datalarla (UserApp) uyuşursa TokenDTO alır 
+ve üyelik gerektiren api'lara erişebilir...
+
+ama üyelik gerektirmeyende, UdemyAuthServer.API'ın app.json içerisinde id (username yerine geçer) ve secret (password yerine geçer)
+olacak 
+ve postman (client) üzerinden gönderilen datalarla (ClientLoginDto) bu app.jon datarı (Client SINIFI) uyuşursa ClientToken DTO alır 
+ve üyelik gerektirmeyene erişebilir...
+
+8:45 üyelik gerektirmeyende reflesh token'a ihtiyaç yok
+8:45 / 9:25 zira reflesh tokenın kullanım amacı tokenın süresi dolunca client'ı login mekanizmasına yönlendirmek ama client'ın üyelik
+gerektirmeyen apilere erişimi için login mekanizmasına ihtiyacı yok. 
+
+DİPNOT: reflesh token kullanılsa ve token süresi bitse tekrar login' 
+
+-----------------------------------------------------------------------------------
+
+16. IUserService interface'sinin oluşturulması --> IUserService.cs
+
+1:14 db ile ilişki kuracak ama repository'si olmayacak olmamasının nedeni... Identity API nin hazır metodları kullanılacağı için
+
+DİPNOT: 1:55 Identity yapısının sunduğu 3 class usermanager, signınmanager, rolemanager 
+
+2:42 Register olurken CreateUserDto.cs kullanılır
+4:23 / 10:10 kayıt olurken username girmeden kayıt olunur sonra register edilirken emailden username çekilir 
+
+5:12 ** IUserService.cs'da  response kullanılacak zira AuthServer API'dan sonuc dönecek.. 
+
+5:53 (UserAppDto) register işlemi için kullanılacak
+7:33 / 10:10 dto kullanmamak güvenlik zafiyeti yaratır
+8:15 8:27 yeni kullanıcı oluşturulurken client'a UserAppDto dönecek
+
+DİPNOT: LoginDto ile UserApp login işlemleri için kullanılır
+sonuç UserAppDto register için kullanılır
+7:24 / 10:10 LoginDto VE UserAppDto; ikisi de UserApp (Identity User) 'e cast edilecek. ya da UserApp bunlara cast olunacak
+
+9:28 GetUserByNameAsync bu methodu, api'lerin db'sinde böyle bir kullanıcı var mı ya bakılacakherhalde bu metod kullanılacak

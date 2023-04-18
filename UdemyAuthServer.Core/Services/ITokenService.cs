@@ -7,6 +7,7 @@ using UdemyAuthServer.Core.Models;
 
 namespace UdemyAuthServer.Core.Services
 {
+    // 14. ITokenService interface'sinin oluşturulması
     public interface ITokenService
     {
         TokenDto CreateToken(UserApp userApp);

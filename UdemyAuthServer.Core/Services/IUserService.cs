@@ -7,6 +7,8 @@ using UdemyAuthServer.Core.DTOs;
 
 namespace UdemyAuthServer.Core.Services
 {
+    // 16. IUserService interface'sinin oluşturulması
+
     public interface IUserService
     {
         Task<Response<UserAppDto>> CreateUserAsync(CreateUserDto createUserDto);
