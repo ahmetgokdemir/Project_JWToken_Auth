@@ -129,3 +129,37 @@ sonuç UserAppDto register için kullanılır
 7:24 / 10:10 LoginDto VE UserAppDto; ikisi de UserApp (Identity User) 'e cast edilecek. ya da UserApp bunlara cast olunacak
 
 9:28 GetUserByNameAsync bu methodu, api'lerin db'sinde böyle bir kullanıcı var mı ya bakılacakherhalde bu metod kullanılacak
+
+
+-----------------------------------------------------------------------------------
+
+Bölüm 5: Servirec Layer
+
+22. AutoMapper library’sinin eklenmesi
+
+1:30 DtoMapper.cs bu assebmly'de (UdemyAuthServer.Service) kullanılacağı için public demek gerekmez
+1:51 Profile'dan miras ... mapper kütüphanesinden geliyor.... Profile sınıfı sayesinde bu maplemeler yapılabilir...
+
+2:18 ProductDTO unutuldu.. eklendi..
+
+ClientLoginDto'yu Client'a cast
+LoginDto'yu UserApp 'a cast edecek gerek yok
+
+ReverseMap ile çift taraflı mapleme...
+4:34 AutoMapper class'a, DtoMapper hakkında bilgilendirme.. hangi nesne hangisiyle maplendi.. Object Mapper.cs
+5:10 Object Mapper... static olacak (ObjectMapper.cs, UdemyAuthServer.Service assebmly'inde)
+
+
+
+5:42 / 10:50 IMapper içerisindeki datayı alana kadar IMapper  memory'de bulunmasın... Lazy sınıfı sayesinde... Lazyloading yani ihtiyaç
+anında memory'e yükler... kullanılmaz ise  uygulama ayağa kalktığında ObjectMapper içerisindeki data  memory'e yüklenir..
+
+6:50 / 10:50 lambda syntax --> parametre almayan ve geriye de IMapper döner çünkü generic olarak IMapper aldık
+
+7:20 / 10:50 
+2. constructorın'da action delege tipinde... 
+IMapperConfigurationExpression interface'ini implemente eden bir class alıyor (sınıf, cfg isminde) parametre alıyor ama geriye bir şey dönmüyor (cfg.AddProfile<DtoMapper>();) ...DİPNOT:  action delege; parametre alan ama geriye bir şey dönmeyen metotları  işaret eder
+
+
+
+
