@@ -96,7 +96,7 @@ TEKRAR ÖZET:
 ve client postman üzerinden dataları (LoginDto) gönderip bu datalar db'deki datalarla (UserApp) uyuşursa TokenDTO alır 
 ve üyelik gerektiren api'lara erişebilir...
 
-ama üyelik gerektirmeyende, UdemyAuthServer.API'ın app.json içerisinde id (username yerine geçer) ve secret (password yerine geçer)
+ama üyelik gerektirmeyende, AuthServer.API'ın app.json içerisinde id (username yerine geçer) ve secret (password yerine geçer)
 olacak 
 ve postman (client) üzerinden gönderilen datalarla (ClientLoginDto) bu app.jon datarı (Client SINIFI) uyuşursa ClientToken DTO alır 
 ve üyelik gerektirmeyene erişebilir...
@@ -137,7 +137,7 @@ Bölüm 5: Servirec Layer
 
 22. AutoMapper library’sinin eklenmesi
 
-1:30 DtoMapper.cs bu assebmly'de (UdemyAuthServer.Service) kullanılacağı için public demek gerekmez
+1:30 DtoMapper.cs bu assebmly'de (AuthServer.Service) kullanılacağı için public demek gerekmez
 1:51 Profile'dan miras ... mapper kütüphanesinden geliyor.... Profile sınıfı sayesinde bu maplemeler yapılabilir...
 
 2:18 ProductDTO unutuldu.. eklendi..
@@ -147,7 +147,7 @@ LoginDto'yu UserApp 'a cast edecek gerek yok
 
 ReverseMap ile çift taraflı mapleme...
 4:34 AutoMapper class'a, DtoMapper hakkında bilgilendirme.. hangi nesne hangisiyle maplendi.. Object Mapper.cs
-5:10 Object Mapper... static olacak (ObjectMapper.cs, UdemyAuthServer.Service assebmly'inde)
+5:10 Object Mapper... static olacak (ObjectMapper.cs, AuthServer.Service assebmly'inde)
 
 
 
