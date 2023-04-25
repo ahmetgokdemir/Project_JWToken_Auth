@@ -161,5 +161,5 @@ anında memory'e yükler... kullanılmaz ise  uygulama ayağa kalktığında Obj
 IMapperConfigurationExpression interface'ini implemente eden bir class alıyor (sınıf, cfg isminde) parametre alıyor ama geriye bir şey dönmüyor (cfg.AddProfile<DtoMapper>();) ...DİPNOT:  action delege; parametre alan ama geriye bir şey dönmeyen metotları  işaret eder
 
 dd
-
+ee
 
