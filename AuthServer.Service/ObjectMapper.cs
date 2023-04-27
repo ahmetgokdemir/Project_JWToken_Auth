@@ -13,6 +13,7 @@ namespace AuthServer.Service
             cfg.AddProfile<DtoMapper>();
         });
 
+
         /*
         static MapperConfiguration deneme(IMapperConfigurationExpression cfg)
         {
